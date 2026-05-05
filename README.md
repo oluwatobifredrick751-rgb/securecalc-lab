@@ -1,53 +1,75 @@
 # SecureCalc Lab
 
-A secure, monitored, and automated Python calculator deployed on AWS using ALB + private EC2 architecture.
+A secure, monitored, and self-healing Python calculator deployed on AWS using **ALB + Private EC2** architecture.
 
-## Architecture Overview
+## Project Overview
 
-- **ALB** (public) as the single entry point
-- **Private EC2** running Streamlit calculator (hidden from internet)
+This project demonstrates how to build a simple application with **enterprise-grade security, monitoring, and automation** practices on AWS. Even though it's "just a calculator", it was treated as a production workload.
+
+**Live URL**: http://securecalc-lab-alb-661141501.us-east-1.elb.amazonaws.com
+
+## Architecture
+
+- **ALB** (Public) as the single entry point
+- **Private EC2** running Streamlit (completely hidden from the internet)
 - Traffic flow: Internet → ALB → Target Group → Private EC2
-- Hardening: Private subnet, least-privilege IAM, SSM-only access, IMDSv2
+- Hardening: Private subnet, strict Security Groups, least-privilege IAM, IMDSv2, SSM-only access
 
 ## Features
 
-- Enhanced Streamlit calculator (Basic + Scientific mode, history, dark/light theme)
-- Auto-start with systemd
-- CloudWatch monitoring and alarms
-- Automated remediation with AWS Lambda + EventBridge + SNS
+- Enhanced Streamlit Calculator with:
+  - Basic & Scientific mode
+  - Calculation history
+  - Dark/Light theme toggle
+- Auto-start with systemd service
+- Real-time monitoring with CloudWatch
+- Automated remediation (Lambda + EventBridge + SNS)
 
 ## Tech Stack
 
-- Terraform (IaC)
-- Streamlit (Python)
-- AWS (VPC, ALB, EC2, CloudWatch, Lambda, EventBridge, SNS)
+- **IaC**: Terraform
+- **Frontend**: Streamlit (Python)
+- **Infrastructure**: VPC, ALB, Private EC2
+- **Monitoring**: Amazon CloudWatch + Alarms + Dashboard
+- **Automation**: AWS Lambda, EventBridge, SNS
 
-## Setup
+## Cost Estimation
 
-1. Clone the repo
-2. Update `terraform.tfvars` with your IP
-3. `terraform init && terraform apply`
-4. Connect to EC2 via SSM and deploy the app
+| Component                  | Monthly Cost (USD)     | Notes |
+|---------------------------|------------------------|-------|
+| EC2 (t3.micro)            | $0 – $8                |Low cost 
+| ALB + NAT Gateway         | $1 – $3                | Main cost drivers |
+| CloudWatch + Lambda       | <$0.50                 | Low cost
+| **Total**                 | **~$2 – $12**          | Reasonable and affordable
 
-## Screenshots
+## Setup Instructions
 
-( Add your screenshots here: ALB URL, Calculator UI, Dashboard, Lambda logs )
+1. Clone the repository
+2. Update `terraform.tfvars` (your IP)
+3. Run `terraform init && terraform apply`
+4. Connect via SSM and deploy the app
+5. Access via ALB DNS name
 
 ## Lessons Learned
 
-- Importance of private subnets and proper Security Group design
-- Building real automation with Lambda
-- Treating even a simple app as production workload
+- Private subnets + ALB is a strong security pattern
+- Treating small apps with production practices builds strong habits
+- Automation (Lambda) is powerful for self-healing
+- Proper monitoring saves a lot of troubleshooting time
 
 ## Future Improvements
 
-- Auto Scaling Group
-- HTTPS on ALB
-- Database integration
-- CI/CD pipeline
+- Implement Auto Scaling Group
+- Add HTTPS using AWS Certificate Manager
+- Add a database (DynamoDB/RDS) for calculation history
+- CI/CD pipeline with GitHub Actions
+
+## Screenshots
+
+*(Add here: ALB URL, Calculator UI, CloudWatch Dashboard, Lambda logs, etc.)*
 
 ---
 
-**Project Status**: Completed with ALB architecture and self-healing automation.
+**Project Status**: Completed (5-Day Roadmap + Enhancements)
 
-Built as part of a 5-day hands-on AWS security & automation project.
+Built as a hands-on project to practice **Secure, Scalable, and Automated** cloud architecture on AWS.
